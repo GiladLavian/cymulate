@@ -1,0 +1,258 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.2
+-- Dumped by pg_dump version 17.0
+
+-- Started on 2025-08-04 17:26:18 IDT
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 219 (class 1259 OID 701458)
+-- Name: messageStatus; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."messageStatus" (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL
+);
+
+
+ALTER TABLE public."messageStatus" OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 701446)
+-- Name: messageTypes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."messageTypes" (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    name character varying NOT NULL
+);
+
+
+ALTER TABLE public."messageTypes" OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 701437)
+-- Name: messages; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.messages (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    sender character varying NOT NULL,
+    recipient character varying NOT NULL,
+    body character varying NOT NULL,
+    "messageType" uuid NOT NULL,
+    subject character varying NOT NULL,
+    status uuid NOT NULL
+);
+
+
+ALTER TABLE public.messages OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 701477)
+-- Name: messagesTracker; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."messagesTracker" (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "messageId" character varying NOT NULL,
+    "ipAddress" character varying NOT NULL
+);
+
+
+ALTER TABLE public."messagesTracker" OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 701486)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    email character varying NOT NULL,
+    password character varying NOT NULL,
+    "firstName" character varying NOT NULL,
+    "lastName" character varying NOT NULL,
+    token character varying
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- TOC entry 3636 (class 0 OID 701458)
+-- Dependencies: 219
+-- Data for Name: messageStatus; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."messageStatus" (id, "createdAt", name) FROM stdin;
+94557c81-c8cf-4e9a-ada9-a4a97ac09e35	2025-08-04 12:14:32.660963+03	Sent
+06b38a32-2786-469d-9c98-cd1fee8e8880	2025-08-04 12:14:32.660963+03	Error
+7d8be5a0-9c26-49ee-a74f-0268605f126c	2025-08-04 12:14:32.660963+03	Pending
+\.
+
+
+--
+-- TOC entry 3635 (class 0 OID 701446)
+-- Dependencies: 218
+-- Data for Name: messageTypes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."messageTypes" (id, "createdAt", name) FROM stdin;
+3215ddc8-59e2-4f31-954a-e8e6bd0963fa	2025-08-04 11:33:58.132309+03	Apple Push Notification
+664cc64c-037d-45eb-b615-5e5c44804d46	2025-08-04 11:33:58.132309+03	SMS
+0b832da1-da0f-4c63-b7b9-e499b735db46	2025-08-04 11:33:58.132309+03	Email
+ca04d043-b6be-4ff3-9c77-38bc68d90a27	2025-08-04 11:33:58.132309+03	Google Push Notification
+\.
+
+
+--
+-- TOC entry 3634 (class 0 OID 701437)
+-- Dependencies: 217
+-- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.messages (id, "createdAt", sender, recipient, body, "messageType", subject, status) FROM stdin;
+8d6867f6-a40f-47bd-a6d6-e66e39e98a07	2025-08-04 12:10:50.708+03	gilad@cymulate.com	target@test.com	http://localhost:4002/track/id	0b832da1-da0f-4c63-b7b9-e499b735db46	Hi there...	7d8be5a0-9c26-49ee-a74f-0268605f126c
+983871c1-adda-481b-9f3d-b1d3e2bdcf06	2025-08-04 12:16:58.445+03	gilad@cymulate.com	target@test.com	http://localhost:4002/track/id	0b832da1-da0f-4c63-b7b9-e499b735db46	Hi there...	7d8be5a0-9c26-49ee-a74f-0268605f126c
+452d380a-cdd7-4fd1-9a64-ea468eb281a0	2025-08-04 12:31:54.922+03	gilad.l@yonalink.com	gilad.l@yonalink.com	http://localhost:4002/track/id	0b832da1-da0f-4c63-b7b9-e499b735db46	Hi there...	7d8be5a0-9c26-49ee-a74f-0268605f126c
+50a1bcdf-b26f-4e35-b490-e372b365b4e9	2025-08-04 12:34:13.863+03	gilad.l@yonalink.com	gilad.l@yonalink.com	http://localhost:4002/track/id	0b832da1-da0f-4c63-b7b9-e499b735db46	Hi there...	7d8be5a0-9c26-49ee-a74f-0268605f126c
+3077bacb-1442-49ab-970f-701a7b588791	2025-08-04 12:36:26.053+03	gilad.l@yonalink.com	gilad.l@yonalink.com	http://localhost:4002/track/id	0b832da1-da0f-4c63-b7b9-e499b735db46	Hi there...	7d8be5a0-9c26-49ee-a74f-0268605f126c
+0c996c84-a3d8-41e7-96dd-3b89d4f92c39	2025-08-04 12:37:46.423+03	gilad.l@yonalink.com	gilad.l@yonalink.com	http://localhost:4002/track/id	0b832da1-da0f-4c63-b7b9-e499b735db46	Hi there...	7d8be5a0-9c26-49ee-a74f-0268605f126c
+b076add9-719d-4b49-8d09-55d46c91a54a	2025-08-04 12:39:01.037+03	gilad.l@yonalink.com	gilad.l@yonalink.com	http://localhost:4002/track/id	0b832da1-da0f-4c63-b7b9-e499b735db46	Hi there...	7d8be5a0-9c26-49ee-a74f-0268605f126c
+8d57588b-f579-4177-bff2-264130becbdb	2025-08-04 12:39:29.644+03	gilad.l@yonalink.com	gilad.l@yonalink.com	http://localhost:4002/track/id	0b832da1-da0f-4c63-b7b9-e499b735db46	Hi there...	7d8be5a0-9c26-49ee-a74f-0268605f126c
+80fcb9bb-a6da-4da3-ba79-d02641828f4f	2025-08-04 12:41:12.57+03	gilad.l@yonalink.com	gilad.l@yonalink.com	http://localhost:4002/track/id	0b832da1-da0f-4c63-b7b9-e499b735db46	Hi there...	7d8be5a0-9c26-49ee-a74f-0268605f126c
+83e3841b-a0c7-4621-8536-72d15a6fc9a5	2025-08-04 13:00:40.994+03	gilad.l@yonalink.com	gilad.l@yonalink.com	http://localhost:4002/track/id	0b832da1-da0f-4c63-b7b9-e499b735db46	Hi there...	94557c81-c8cf-4e9a-ada9-a4a97ac09e35
+b4c46922-ce3a-45be-ba31-a6c7c6fee960	2025-08-04 13:19:32.178+03	gilad.l@yonalink.com	gilad.l@yonalink.com	http://localhost:4002/track/id	0b832da1-da0f-4c63-b7b9-e499b735db46	Hi there...	94557c81-c8cf-4e9a-ada9-a4a97ac09e35
+d8c4c73a-b80d-44da-b74a-9d0908a6e10d	2025-08-04 16:20:10.582+03	gilad.l@yonalink.com	gilad.l@yonalink.com	i'm body	0b832da1-da0f-4c63-b7b9-e499b735db46	test subject	94557c81-c8cf-4e9a-ada9-a4a97ac09e35
+a75ed594-1d37-4e1f-bd9f-65dd724988be	2025-08-04 16:28:41.685+03	gilad.l@yonalink.com	gilad.l@yonalink.com		0b832da1-da0f-4c63-b7b9-e499b735db46	yey...	94557c81-c8cf-4e9a-ada9-a4a97ac09e35
+\.
+
+
+--
+-- TOC entry 3637 (class 0 OID 701477)
+-- Dependencies: 220
+-- Data for Name: messagesTracker; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."messagesTracker" (id, "createdAt", "messageId", "ipAddress") FROM stdin;
+baa39ea9-6794-456b-a61f-bd6c2524ff7d	2025-08-04 13:13:16.051+03	123	::1
+6487eecf-8a62-4d05-84be-e0e120ab35d7	2025-08-04 13:16:06.877+03	123	::1
+3e9c8e84-ae25-4bcb-ba7a-9c80b2feeb60	2025-08-04 13:19:57.734+03	b4c46922-ce3a-45be-ba31-a6c7c6fee960	::1
+\.
+
+
+--
+-- TOC entry 3638 (class 0 OID 701486)
+-- Dependencies: 221
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, "createdAt", email, password, "firstName", "lastName", token) FROM stdin;
+479d76ad-4d9e-451b-901b-520e488bcc1f	2025-08-04 14:12:21.261+03	gilad.l@yonalink.com	1234	Gilad	Lavian	\N
+d1031532-d8cc-476b-8782-dbc908aea718	2025-08-04 14:42:30.663+03	gilad.lavian@gmail.com	555	Gilad	Lavian	\N
+\.
+
+
+--
+-- TOC entry 3480 (class 2606 OID 701466)
+-- Name: messageStatus messageStatus_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."messageStatus"
+    ADD CONSTRAINT "messageStatus_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3478 (class 2606 OID 701452)
+-- Name: messageTypes messageTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."messageTypes"
+    ADD CONSTRAINT "messageTypes_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3482 (class 2606 OID 701484)
+-- Name: messagesTracker messagesTracker_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."messagesTracker"
+    ADD CONSTRAINT "messagesTracker_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3476 (class 2606 OID 701445)
+-- Name: messages messages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3484 (class 2606 OID 701496)
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 3486 (class 2606 OID 701494)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3487 (class 2606 OID 701467)
+-- Name: messages messages_messageType_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT "messages_messageType_fkey" FOREIGN KEY ("messageType") REFERENCES public."messageTypes"(id) NOT VALID;
+
+
+--
+-- TOC entry 3488 (class 2606 OID 701472)
+-- Name: messages messages_status_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_status_fkey FOREIGN KEY (status) REFERENCES public."messageStatus"(id) NOT VALID;
+
+
+-- Completed on 2025-08-04 17:26:19 IDT
+
+--
+-- PostgreSQL database dump complete
+--
+

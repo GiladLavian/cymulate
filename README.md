@@ -1,4 +1,6 @@
 # API
+Using postgresql, restore the database backup from "database" folder.
+
 Go to cymulate-api folder and add .env file to root folder with:
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/cymulate?schema=public"
 

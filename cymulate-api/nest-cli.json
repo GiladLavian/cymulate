@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/cymulate-api/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/cymulate-api/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/cymulate-api",
+  "projects": {
+    "cymulate-api": {
+      "type": "application",
+      "root": "apps/cymulate-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/cymulate-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/cymulate-api/tsconfig.app.json"
+      }
+    },
+    "cymulate-messaging": {
+      "type": "application",
+      "root": "apps/cymulate-messaging",
+      "entryFile": "main",
+      "sourceRoot": "apps/cymulate-messaging/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/cymulate-messaging/tsconfig.app.json"
+      }
+    },
+    "cymulate-tracker": {
+      "type": "application",
+      "root": "apps/cymulate-tracker",
+      "entryFile": "main",
+      "sourceRoot": "apps/cymulate-tracker/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/cymulate-tracker/tsconfig.app.json"
+      }
+    },
+    "infrastructures": {
+      "type": "library",
+      "root": "libs/infrastructures",
+      "entryFile": "index",
+      "sourceRoot": "libs/infrastructures/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/infrastructures/tsconfig.lib.json"
+      }
+    }
+  }
+}

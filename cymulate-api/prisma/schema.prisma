@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model messageTypes {
+  id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime   @default(now()) @db.Timestamptz(6)
+  name      String     @db.VarChar
+  messages  messages[]
+}
+
+model messages {
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime      @default(now()) @db.Timestamptz(6)
+  sender        String        @db.VarChar
+  recipient     String        @db.VarChar
+  body          String        @db.VarChar
+  messageType   String        @db.Uuid
+  subject       String        @db.VarChar
+  status        String        @db.Uuid
+  messageTypes  messageTypes  @relation(fields: [messageType], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  messageStatus messageStatus @relation(fields: [status], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model messageStatus {
+  id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime   @default(now()) @db.Timestamptz(6)
+  name      String     @db.VarChar
+  messages  messages[]
+}
+
+model messagesTracker {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  messageId String   @db.VarChar
+  ipAddress String   @db.VarChar
+}
+
+model users {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  email     String   @unique @db.VarChar
+  password  String   @db.VarChar
+  firstName String   @db.VarChar
+  lastName  String   @db.VarChar
+  token     String?  @db.VarChar
+}
